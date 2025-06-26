@@ -5,6 +5,7 @@ import { parseTree } from "../ParseReactTree";
 import Tree from "react-d3-tree";
 import { convertTreeToNodes } from "../ConvertTreeToNodes";
 import JSXPanel from "../components/JSXPanel";
+import { compareTreeNodes } from "../CompareTreeNodes";
 
 const DiffingDemo = () => {
   const [originalJsxCode, setOriginalJsxCode] = useState("");
@@ -13,6 +14,7 @@ const DiffingDemo = () => {
   const [modifiedTree, setModifiedTree] = useState([]);
   const [originalTreeNodes, setOriginalTreeNodes] = useState();
   const [modifiedTreeNodes, setModifiedTreeNodes] = useState();
+  const [diffingTrue,setDiffingTrue]=useState(false);
 
   const transformOriginalJsx = () => {
     try {
@@ -20,6 +22,7 @@ const DiffingDemo = () => {
         presets: ["react"],
       });
       setOriginalTree(parseTree(result.code));
+      setDiffingTrue(true);
     } catch (err) {
       console.error(err.message);
     }
@@ -31,6 +34,7 @@ const DiffingDemo = () => {
         presets: ["react"],
       });
       setModifiedTree(parseTree(result.code));
+      setDiffingTrue(true);
     } catch (err) {
       console.error(err.message);
     }
@@ -38,10 +42,14 @@ const DiffingDemo = () => {
 
   useEffect(() => {
     setOriginalTreeNodes(convertTreeToNodes(originalTree));
+    console.log(compareTreeNodes(originalTree))
+    compareTreeNodes("original",originalTree)
   }, [originalTree]);
 
   useEffect(() => {
     setModifiedTreeNodes(convertTreeToNodes(modifiedTree));
+    console.log(compareTreeNodes(modifiedTree))
+    compareTreeNodes("modified",modifiedTree)
   }, [modifiedTree]);
 
   return (
@@ -70,6 +78,7 @@ const DiffingDemo = () => {
                 setJsxCode={setOriginalJsxCode}
                 transformJsx={transformOriginalJsx}
                 className="flex-1 h-full"
+                diffingTrue={diffingTrue}
               />
             </div>
           </div>
@@ -85,6 +94,7 @@ const DiffingDemo = () => {
                 setJsxCode={setModifiedJsxCode}
                 transformJsx={transformModifiedJsx}
                 className="flex-1 h-full"
+                diffingTrue={diffingTrue}
               />
             </div>
           </div>

@@ -15,17 +15,17 @@ export function parseTree(code) {
     plugins: ["jsx"],
   });
 
-  console.log(buildElementTree(ast.program.body[0].expression));
+  // console.log(buildElementTree(ast.program.body[0].expression));
   return buildElementTree(ast.program.body[0].expression);
 }
-console.log(ast);
+// console.log(ast);
 // console.log(ast.program.body);
 // console.log(ast.program.body[0].expression);
 
 // console.log(buildElementTree(ast.program.body[0].expression))
 
 export function buildElementTree(node) {
-  console.log(node);
+  // console.log(node);
   if (
     node.type === "CallExpression" &&
     node.callee.type === "MemberExpression" &&

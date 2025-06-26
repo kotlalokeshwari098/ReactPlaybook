@@ -5,14 +5,6 @@ import DiffingDemo from './pages/DiffingDemo';
 import AppLayout from './layout/AppLayout'
 import HomePage from './pages/HomePage';
 
-// const App = () => {
-//   return (
-//     <div>
-//       <JSXConverter />
-      
-//     </div>
-//   )
-// }
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
