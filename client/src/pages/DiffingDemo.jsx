@@ -7,28 +7,42 @@ import { convertTreeToNodes } from "../ConvertTreeToNodes";
 import JSXPanel from "../components/JSXPanel";
 
 const DiffingDemo = () => {
-  const [jsxCode, setJsxCode] = useState("");
-  const [output, setOutput] = useState("");
-  const [tree, setTree] = useState([]);
-  const [treeNodes, setTreeNodes] = useState();
+  const [originalJsxCode, setOriginalJsxCode] = useState("");
+  const [modifiedJsxCode, setModifiedJsxCode] = useState("");
+  const [originalTree, setOriginalTree] = useState([]);
+  const [modifiedTree, setModifiedTree] = useState([]);
+  const [originalTreeNodes, setOriginalTreeNodes] = useState();
+  const [modifiedTreeNodes, setModifiedTreeNodes] = useState();
 
-  const transformJsx = () => {
+  const transformOriginalJsx = () => {
     try {
-      const result = Babel.transform(jsxCode, {
+      const result = Babel.transform(originalJsxCode, {
         presets: ["react"],
       });
-      setOutput(result.code);
-
-      setTree(parseTree(result.code));
-      //type,props,children form it is
+      setOriginalTree(parseTree(result.code));
     } catch (err) {
-      setOutput(err.message);
+      console.error(err.message);
+    }
+  };
+
+  const transformModifiedJsx = () => {
+    try {
+      const result = Babel.transform(modifiedJsxCode, {
+        presets: ["react"],
+      });
+      setModifiedTree(parseTree(result.code));
+    } catch (err) {
+      console.error(err.message);
     }
   };
 
   useEffect(() => {
-    setTreeNodes(convertTreeToNodes(tree));
-  }, [setTree, tree]);
+    setOriginalTreeNodes(convertTreeToNodes(originalTree));
+  }, [originalTree]);
+
+  useEffect(() => {
+    setModifiedTreeNodes(convertTreeToNodes(modifiedTree));
+  }, [modifiedTree]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 py-6 px-4 sm:px-6">
@@ -43,61 +57,102 @@ const DiffingDemo = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left Panel - JSX Input */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden h-[calc(400px+300px+1.5rem)] flex flex-col">
+        {/* JSX Input Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* Original JSX Panel */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden h-[400px] flex flex-col">
+            <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 py-2 px-4">
+              <h3 className="text-lg font-medium text-white">Original JSX</h3>
+            </div>
             <div className="h-full flex flex-col p-0">
               <JSXPanel
-                jsxcode={jsxCode}
-                setJsxCode={setJsxCode}
-                transformJsx={transformJsx}
+                jsxcode={originalJsxCode}
+                setJsxCode={setOriginalJsxCode}
+                transformJsx={transformOriginalJsx}
                 className="flex-1 h-full"
               />
             </div>
           </div>
 
-          {/* Right Panel */}
-          <div className="flex flex-col gap-6">
-            {/* Upper Section - Node Tree */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden p-6 h-[400px]">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">
-                Component Tree
-              </h3>
-              <div className="h-[calc(100%-2rem)] bg-gray-50 rounded-lg border border-gray-100">
-                {tree && treeNodes ? (
-                  <div className="w-full h-full">
-                    <Tree
-                      data={treeNodes}
-                      rootNodeClassName="node__root"
-                      branchNodeClassName="node__branch"
-                      leafNodeClassName="node__leaf"
-                      pathFunc="step"
-                      orientation="vertical"
-                      collapsible={true}
-                      translate={{ x: 200, y: 30 }}
-                      zoomable={true}
-                      scaleExtent={{ min: 0.1, max: 1.5 }}
-                      separation={{ siblings: 0.7, nonSiblings: 1 }}
-                      nodeSize={{ x: 120, y: 60 }}
-                      pathClassFunc={() => "text-indigo-600 stroke-2"}
-                    />
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-center h-full text-gray-500">
-                    Transform some JSX to see the tree visualization
-                  </div>
-                )}
-              </div>
+          {/* Modified JSX Panel */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden h-[400px] flex flex-col">
+            <div className="bg-gradient-to-r from-purple-500 to-purple-600 py-2 px-4">
+              <h3 className="text-lg font-medium text-white">Modified JSX</h3>
             </div>
+            <div className="h-full flex flex-col p-0">
+              <JSXPanel
+                jsxcode={modifiedJsxCode}
+                setJsxCode={setModifiedJsxCode}
+                transformJsx={transformModifiedJsx}
+                className="flex-1 h-full"
+              />
+            </div>
+          </div>
+        </div>
 
-          {/* For showing the changes in nodes when made in jsx code */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden p-6 h-[300px]">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">
-                DOM Updates
-              </h3>
-              <div className="h-[calc(100%-2rem)] bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-center text-gray-500">
-                This area is reserved for DOM update visualization
-              </div>
+        {/* Tree Visualization Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Original Tree */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden p-6 h-[400px]">
+            <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 py-2 px-4 -mx-6 -mt-6 mb-4">
+              <h3 className="text-lg font-medium text-white">Original Tree</h3>
+            </div>
+            <div className="h-[calc(100%-3.5rem)] bg-gray-50 rounded-lg border border-gray-100">
+              {originalTree && originalTreeNodes ? (
+                <div className="w-full h-full">
+                  <Tree
+                    data={originalTreeNodes}
+                    rootNodeClassName="node__root"
+                    branchNodeClassName="node__branch"
+                    leafNodeClassName="node__leaf"
+                    pathFunc="step"
+                    orientation="vertical"
+                    collapsible={true}
+                    translate={{ x: 150, y: 30 }}
+                    zoomable={true}
+                    scaleExtent={{ min: 0.1, max: 1.5 }}
+                    separation={{ siblings: 0.7, nonSiblings: 1 }}
+                    nodeSize={{ x: 120, y: 60 }}
+                    pathClassFunc={() => "text-indigo-600 stroke-2"}
+                  />
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-500">
+                  Transform Original JSX to see the tree visualization
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Modified Tree */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden p-6 h-[400px]">
+            <div className="bg-gradient-to-r from-purple-500 to-purple-600 py-2 px-4 -mx-6 -mt-6 mb-4">
+              <h3 className="text-lg font-medium text-white">Modified Tree</h3>
+            </div>
+            <div className="h-[calc(100%-3.5rem)] bg-gray-50 rounded-lg border border-gray-100">
+              {modifiedTree && modifiedTreeNodes ? (
+                <div className="w-full h-full">
+                  <Tree
+                    data={modifiedTreeNodes}
+                    rootNodeClassName="node__root"
+                    branchNodeClassName="node__branch"
+                    leafNodeClassName="node__leaf"
+                    pathFunc="step"
+                    orientation="vertical"
+                    collapsible={true}
+                    translate={{ x: 150, y: 30 }}
+                    zoomable={true}
+                    scaleExtent={{ min: 0.1, max: 1.5 }}
+                    separation={{ siblings: 0.7, nonSiblings: 1 }}
+                    nodeSize={{ x: 120, y: 60 }}
+                    pathClassFunc={() => "text-purple-600 stroke-2"}
+                  />
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-500">
+                  Transform Modified JSX to see the tree visualization
+                </div>
+              )}
             </div>
           </div>
         </div>
