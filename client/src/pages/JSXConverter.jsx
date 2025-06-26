@@ -6,6 +6,7 @@ import { parseTree } from '../ParseReactTree';
 import TreeVisualizer from '../components/TreeVisualizer';
 import Tree from 'react-d3-tree';
 import { convertTreeToNodes } from '../ConvertTreeToNodes';
+import JSXPanel from '../components/JSXPanel';
 
 export default function JSXConverter() {
   const [jsxCode, setJsxCode] = useState('');
@@ -47,43 +48,12 @@ export default function JSXConverter() {
         </div>
 
         <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 ">
             {/* Left Panel - Input */}
-            <div className="p-6 border-b lg:border-b-0 lg:border-r border-gray-200">
-              <div className="mb-4">
-                <div className="flex justify-between items-center">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Enter JSX Code:
-                  </label>
-                  <div className="text-xs text-gray-500">
-                    Powered by Babel
-                  </div>
-                </div>
-                <div className="relative mb-6">
-                  <textarea
-                    className="w-full h-72 p-4 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-mono text-sm resize-none shadow-inner"
-                    value={jsxCode}
-                    onChange={(e) => setJsxCode(e.target.value)}
-                    placeholder="Enter your JSX code here... e.g. <div className='container'><h1>Hello World</h1></div>"
-                    style={{ height: "400px" }}
-                  />
-                </div>
-                <div className="flex justify-center">
-                  <button
-                    className="py-3 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-lg hover:opacity-90 transition duration-200 shadow-md flex items-center justify-center"
-                    onClick={transformJsx}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                    </svg>
-                    Transform JSX
-                  </button>
-                </div>
-              </div>
-            </div>
+           <JSXPanel jsxcode={jsxCode} setJsxCode={setJsxCode} transformJsx={transformJsx} />
 
             {/* Right Panel - Output and Visualization */}
-            <div className="bg-gray-50">
+            <div className="bg-gray-50 ">
               <div className="border-b border-gray-200">
                 <nav className="-mb-px flex">
                   <button
