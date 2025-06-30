@@ -1,6 +1,6 @@
 import React from 'react';
 
-const JSXPanel = ({ jsxcode, setJsxCode, transformJsx, className }) => {
+const Jsxpanel = ({ jsxcode, setJsxCode, transformJsx, className }) => {
   return (
     <div className={`p-6 flex flex-col h-full ${className}`}>
       <div className="flex justify-between items-center mb-4">
@@ -38,4 +38,4 @@ const JSXPanel = ({ jsxcode, setJsxCode, transformJsx, className }) => {
   );
 };
 
-export default JSXPanel;
+export default Jsxpanel;

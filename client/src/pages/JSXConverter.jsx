@@ -6,7 +6,7 @@ import { parseTree } from '../ParseReactTree';
 import TreeVisualizer from '../components/TreeVisualizer';
 import Tree from 'react-d3-tree';
 import { convertTreeToNodes } from '../ConvertTreeToNodes';
-import JSXPanel from '../components/JSXPanel';
+import Jsxpanel from '../components/Jsxpanel';
 
 export default function JSXConverter() {
   const [jsxCode, setJsxCode] = useState('');
@@ -50,7 +50,7 @@ export default function JSXConverter() {
         <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 ">
             {/* Left Panel - Input */}
-           <JSXPanel jsxcode={jsxCode} setJsxCode={setJsxCode} transformJsx={transformJsx} />
+           <Jsxpanel jsxcode={jsxCode} setJsxCode={setJsxCode} transformJsx={transformJsx} />
 
             {/* Right Panel - Output and Visualization */}
             <div className="bg-gray-50 ">

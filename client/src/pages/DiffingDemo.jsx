@@ -4,7 +4,7 @@ import "../App.css";
 import { parseTree } from "../ParseReactTree";
 import Tree from "react-d3-tree";
 import { convertTreeToNodes } from "../ConvertTreeToNodes";
-import JSXPanel from "../components/JSXPanel";
+import Jsxpanel from "../components/Jsxpanel";
 import { compareTreeNodes } from "../CompareTreeNodes";
 
 const DiffingDemo = () => {
@@ -54,16 +54,16 @@ const DiffingDemo = () => {
 
    const getDynamicPathClass = ({ source, target }, orientation) => {
     if (!target.children) {
-      // Target node has no children -> this link leads to a leaf node.
+      
       return 'link__to-leaf';
     }
 
-    // Style it as a link connecting two branch nodes by default.
+    
     return 'link__to-branch';
   };
 
   const myCustomNode = ({ nodeDatum, toggleNode }) => {
-  // Assign fill color dynamically based on nodeDatum.status
+  
   const fillColor = nodeDatum.status === 'modified' ? 'red' : 'yellow';
 
   return (
@@ -97,7 +97,7 @@ const DiffingDemo = () => {
               <h3 className="text-lg font-medium text-white">Original JSX</h3>
             </div>
             <div className="h-full flex flex-col p-0">
-              <JSXPanel
+              <Jsxpanel
                 jsxcode={originalJsxCode}
                 setJsxCode={setOriginalJsxCode}
                 transformJsx={transformOriginalJsx}
@@ -113,7 +113,7 @@ const DiffingDemo = () => {
               <h3 className="text-lg font-medium text-white">Modified JSX</h3>
             </div>
             <div className="h-full flex flex-col p-0">
-              <JSXPanel
+              <Jsxpanel
                 jsxcode={modifiedJsxCode}
                 setJsxCode={setModifiedJsxCode}
                 transformJsx={transformModifiedJsx}
