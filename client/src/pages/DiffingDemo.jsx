@@ -14,7 +14,7 @@ const DiffingDemo = () => {
   const [modifiedTree, setModifiedTree] = useState([]);
   const [originalTreeNodes, setOriginalTreeNodes] = useState();
   const [modifiedTreeNodes, setModifiedTreeNodes] = useState();
-  const [diffingTrue,setDiffingTrue]=useState(false);
+  const [diffingTrue, setDiffingTrue] = useState(false);
 
   const transformOriginalJsx = () => {
     try {
@@ -42,15 +42,39 @@ const DiffingDemo = () => {
 
   useEffect(() => {
     setOriginalTreeNodes(convertTreeToNodes(originalTree));
-    console.log(compareTreeNodes(originalTree))
-    compareTreeNodes("original",originalTree)
+    console.log(compareTreeNodes(originalTree));
+    compareTreeNodes("original", originalTree);
   }, [originalTree]);
 
   useEffect(() => {
+    console.log(compareTreeNodes(modifiedTree));
+    compareTreeNodes("modified", modifiedTree);
     setModifiedTreeNodes(convertTreeToNodes(modifiedTree));
-    console.log(compareTreeNodes(modifiedTree))
-    compareTreeNodes("modified",modifiedTree)
   }, [modifiedTree]);
+
+   const getDynamicPathClass = ({ source, target }, orientation) => {
+    if (!target.children) {
+      // Target node has no children -> this link leads to a leaf node.
+      return 'link__to-leaf';
+    }
+
+    // Style it as a link connecting two branch nodes by default.
+    return 'link__to-branch';
+  };
+
+  const myCustomNode = ({ nodeDatum, toggleNode }) => {
+  // Assign fill color dynamically based on nodeDatum.status
+  const fillColor = nodeDatum.status === 'modified' ? 'red' : 'yellow';
+
+  return (
+    <g>
+      <circle r={15} fill={fillColor} onClick={toggleNode} />
+      <text fill="black" strokeWidth="1" x="20" y="5">
+        {nodeDatum.name}
+      </text>
+    </g>
+  );
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 py-6 px-4 sm:px-6">
@@ -155,7 +179,8 @@ const DiffingDemo = () => {
                     scaleExtent={{ min: 0.1, max: 1.5 }}
                     separation={{ siblings: 0.7, nonSiblings: 1 }}
                     nodeSize={{ x: 120, y: 60 }}
-                    pathClassFunc={() => "text-purple-600 stroke-2"}
+                    renderCustomNodeElement={myCustomNode}
+                     pathClassFunc={getDynamicPathClass}
                   />
                 </div>
               ) : (

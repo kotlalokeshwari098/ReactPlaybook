@@ -1,5 +1,5 @@
 .node__root > circle {
-  fill: red;
+  fill: yellow;
 }
 
 .node__branch > circle {
@@ -10,4 +10,30 @@
   fill: green;
   /* Let's also make the radius of leaf nodes larger */
   r: 40;
+}
+
+.node--modified > circle {
+  fill: orange !important;
+  stroke: #cc7a00;
+  stroke-width: 2px;
+}
+
+.node--added circle {
+  fill: #00cc66;
+  stroke: #00994d;
+  stroke-width: 2px;
+}
+
+.node--default circle {
+  fill: yellow;
+}
+
+.node--modified text {
+  fill: orange;
+  font-weight: bold;
+}
+
+.node--added text {
+  fill: green;
+  font-weight: bold;
 }

@@ -9,7 +9,7 @@ const traverse = traversePkg.default || traversePkg;
 // `;
 let ast;
 export function parseTree(code) {
-  console.log(code);
+  // console.log(code);
   ast = parser.parse(code, {
     sourceType: "module",
     plugins: ["jsx"],
@@ -36,6 +36,7 @@ export function buildElementTree(node) {
       type: node.arguments[0].value,
       props: {},
       children: [],
+      status:''
     };
 
     //Extract props
@@ -70,7 +71,7 @@ export function buildElementTree(node) {
         console.log("unknown child type");
       }
     }
-    console.log(element);
+    // console.log(element);
     return element;
   }
 }
