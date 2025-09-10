@@ -65,7 +65,6 @@ Use React Playbook to explore how React works behind the scenes, experiment with
 ---
 
 
-:fire: Contribution
-This is currently a personal project, so contributions are not open at this time.
+
 
 
